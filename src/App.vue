@@ -1,19 +1,38 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <ul
+      v-infinite-scroll="loadMore"
+      infinite-scroll-disabled="busy"
+      infinite-scroll-distance="100"
+    >
+      <li v-for="x in list" :key="x">numero: {{ x }}</li>
+      <img v-if="loading" :src="img" alt="" />
+    </ul>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import imgLoad from "@/assets/spinner.gif";
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  name: "App",
+  data() {
+    return {
+      loading: false,
+      img: imgLoad,
+      list: 100
+    };
+  },
+  methods: {
+    loadMore: function() {
+      this.loading = true;
+
+      setTimeout(() => {
+        this.loading = false;
+        this.list += 100;
+      }, 3000);
+    }
   }
-}
+};
 </script>
 
 <style>
@@ -24,5 +43,11 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+li {
+  width: 80%;
+  background-color: #ccc;
+  margin: 4px;
+  padding: 5px;
 }
 </style>
